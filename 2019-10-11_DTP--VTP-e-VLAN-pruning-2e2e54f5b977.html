@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>DTP, VTP e VLAN pruning</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">DTP, VTP e VLAN pruning</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+1.2 Configure, verify, and troubleshoot interswitch connectivity
+</section>
+<section data-field="body" class="e-content">
+<section name="d198" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="278d" id="278d" class="graf graf--h3 graf--leading graf--title">DTP, VTP e VLAN pruning</h3><p name="e6d0" id="e6d0" class="graf graf--p graf-after--h3"><em class="markup--em markup--p-em">1.2 Configure, verify, and troubleshoot interswitch connectivity</em></p><h3 name="9539" id="9539" class="graf graf--h3 graf-after--p">DTP</h3><p name="4879" id="4879" class="graf graf--p graf-after--h3">Dynamic Trunk Protocol é um protocolo proprietário Cisco que tem a função de negociar o switchpor mode de uma porta de acordo com onde ela for conectada.<br>Curiosamente, apesar de vir habilitado (dynamic auto) a Cisco recomenda que <strong class="markup--strong markup--p-strong">não seja utilizado</strong> DTP, de modo que a boa prática é configurar especificamente a porta em modo Access ou Trunk, conforme a necessidade.</p><p name="afc5" id="afc5" class="graf graf--p graf-after--p">Abaixo um tabela demonstrando os possíveis resultados de negociação em diferentes modos:</p><figure name="1b23" id="1b23" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 515px; max-height: 239px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 46.400000000000006%;"></div><img class="graf-image" data-image-id="1*shpnOvIx5F_nlacTPwP6sA.jpeg" data-width="515" data-height="239" src="https://cdn-images-1.medium.com/max/800/1*shpnOvIx5F_nlacTPwP6sA.jpeg"></div></figure><p name="0371" id="0371" class="graf graf--p graf-after--figure"><em class="markup--em markup--p-em">Em suma: se negociar dynamic auto com dynamic auto, o enlace será access. Se negociar dynamic desirable com dynamic auto ou desirable, o enlace será trunk.</em></p><p name="653d" id="653d" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Configuração e troubleshooting:</strong></p><p name="6e3f" id="6e3f" class="graf graf--p graf-after--p">Modificar modo da interface para dinamico auto ou desirable:<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1(config-if)# <strong class="markup--strong markup--p-strong">switchport mode dynamic </strong>{<strong class="markup--strong markup--p-strong"> auto </strong>|<strong class="markup--strong markup--p-strong"> desirable </strong>}</code></p><p name="fed4" id="fed4" class="graf graf--p graf-after--p">Verificar status global do DTP ou em interface específica:<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1(config)# <strong class="markup--strong markup--p-strong">show dtp</strong><br>SW1(config)# <strong class="markup--strong markup--p-strong">show dtp interface</strong> Gi0/1</code></p><h3 name="bde5" id="bde5" class="graf graf--h3 graf-after--p">VTP</h3><p name="f393" id="f393" class="graf graf--p graf-after--h3">Vlan Trunk Protocol é um protocolo proprietário Cisco, que tem a função de simplificar a administração de VLANs replicando automaticamente as VLANs criadas em um switch para todos os switches no domínio VTP.</p><p name="4646" id="4646" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Requisitos:</strong></p><ul class="postList"><li name="7852" id="7852" class="graf graf--li graf-after--p">Todos os switches devem utilizar o mesmo VTP Domain Name e VTP version (v1 ou v2)*</li><li name="9060" id="9060" class="graf graf--li graf-after--li">Os trunks devem estar devidamente configurados (VTP não é propagado em interfaces Access).</li><li name="e2a6" id="e2a6" class="graf graf--li graf-after--li">É possível definir um VTP password, que deve ser igual em todo domínio VTP.</li></ul><p name="5b64" id="5b64" class="graf graf--p graf-after--li"><strong class="markup--strong markup--p-strong">Conceitos</strong>:</p><p name="9dab" id="9dab" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">VTP Mode</strong> — Define o comportamento de um membro do domínio VTP:</p><ul class="postList"><li name="c57f" id="c57f" class="graf graf--li graf-after--p">Server — Replica suas VLANs para o domínio.</li><li name="bd35" id="bd35" class="graf graf--li graf-after--li">Client — Recebe as VLANs do server e reencaminha no domínio. Não é possivel criar ou remover VLANs manualmente neste modo.</li><li name="3414" id="3414" class="graf graf--li graf-after--li">Transparent — Reencaminha as VLANs no domínio, mas não replica as suas ou recebe VLANs. Mudar de modo client para transparent não remove as VLANs eventualmente recebidas de um VTP server.</li></ul><figure name="e3b7" id="e3b7" class="graf graf--figure graf-after--li"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 584px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 83.39999999999999%;"></div><img class="graf-image" data-image-id="1*iuI65yTLYfLoXrKWEiuGMA.jpeg" data-width="848" data-height="707" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*iuI65yTLYfLoXrKWEiuGMA.jpeg"></div><figcaption class="imageCaption">A tabela CAM do switch SW2 não é atualizada com as VLANs 10 e 20, propagadas pelo SW1, mas os frames VTP são seguem para o SW3. Note que o SW2 tem uma VLAN 40 criada, mas não à propaga.</figcaption></figure><p name="15a3" id="15a3" class="graf graf--p graf-after--figure"><strong class="markup--strong markup--p-strong">VLAN pruning</strong>— “Limpa” a lista de VLANs permitidas, mantendo apenas as que tem tráfego entre os trunks.</p><p name="b7f5" id="b7f5" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Configuração:</strong></p><p name="00a0" id="00a0" class="graf graf--p graf-after--p">Criar domínio e definir modo VTP:<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1(config)# <strong class="markup--strong markup--p-strong">vtp domain </strong>domain-name<br>SW1(config)# <strong class="markup--strong markup--p-strong">vtp version </strong>{<strong class="markup--strong markup--p-strong">1 </strong>|<strong class="markup--strong markup--p-strong"> 2</strong>}<br>SW1(config)# <strong class="markup--strong markup--p-strong">vtp mode </strong>{<strong class="markup--strong markup--p-strong">client </strong>|<strong class="markup--strong markup--p-strong"> server </strong>|<strong class="markup--strong markup--p-strong"> transparent</strong>}<br>SW1(config)# <strong class="markup--strong markup--p-strong">vtp password </strong>password</code></p><p name="7cfc" id="7cfc" class="graf graf--p graf-after--p">Configurar VTP Prunning (no VTP Server):<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1(config)# <strong class="markup--strong markup--p-strong">vtp prunning</strong></code></p><p name="1fb1" id="1fb1" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Troubleshooting:</strong></p><p name="5089" id="5089" class="graf graf--p graf-after--p">Verificar VTP:<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1# <strong class="markup--strong markup--p-strong">show vtp status<br></strong>SW1# <strong class="markup--strong markup--p-strong">show vtp counters</strong></code></p><p name="3bbb" id="3bbb" class="graf graf--p graf-after--p graf--trailing"><em class="markup--em markup--p-em">*Existe uma versão 3 do VTP, mas ela é bem diferente, e coberta apenas no CCNP Switch, de forma que não será tratada aqui.</em></p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@fernandorgs" class="p-author h-card">Fernando Machado</a> on <a href="https://medium.com/p/2e2e54f5b977"><time class="dt-published" datetime="2019-10-11T18:38:55.491Z">October 11, 2019</time></a>.</p><p><a href="https://medium.com/@fernandorgs/dtp-vtp-e-vlan-pruning-2e2e54f5b977" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on October 11, 2019.</p></footer></article></body></html>

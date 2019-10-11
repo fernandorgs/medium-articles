@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>VLANs</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">VLANs</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+1.1 Configure, verify, and troubleshoot VLANs (normal/extended range) spanning multiple switches
+</section>
+<section data-field="body" class="e-content">
+<section name="c785" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="99de" id="99de" class="graf graf--h3 graf--leading graf--title">VLANs</h3><p name="4209" id="4209" class="graf graf--p graf-after--h3"><em class="markup--em markup--p-em">1.1 Configure, verify, and troubleshoot VLANs (normal/extended range) spanning multiple switches</em></p><p name="00e6" id="00e6" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Conceitos</strong>:</p><p name="e1b1" id="e1b1" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Trunk </strong>— Modo tronco de interligação entre interfaces L2. Ambos os lados do trunk devem ter as mesmas configurações de tag e VLAN nativa, bem como utilizar o mesmo protocolo de encapsulamento (802.1q ou ISL).</p><p name="7db3" id="7db3" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Access </strong>— Modo de interligação entre dispositivos de acesso e switches de acesso. Passa apenas uma VLAN, sem tag.</p><p name="bbe9" id="bbe9" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">VLAN default</strong> — Não pode ser alterada ou excluída, usada para tráfego de protocolos. Seu valor de VLAN ID é sempre 1.</p><p name="dffd" id="dffd" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">VLAN nativa</strong> — Propriedade de trunk que define a passagem de tráfego untagged. Vem setada como VLAN ID 1, mas pode (e deve, por segurança) ser alterada.</p><p name="8999" id="8999" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">VLAN ID</strong> — Valor que identifica a VLAN. O range normal fica entre 1 e 1005, sendo 1002–1005 reservados. O range estendido fica entre 1006 e 4094. Em equipamentos Cisso, as VLANs criadas com ID no range normal ficam salvas no arquivo vlan.dat, já o range estendido fica gravado no running-config (sendo salvo via startup-config).</p><p name="10f0" id="10f0" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Configuração:</strong></p><p name="185a" id="185a" class="graf graf--p graf-after--p">Criar VLANs:<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1(config)# <strong class="markup--strong markup--p-strong">vlan </strong>XX<br>SW1(config-vlan)# <strong class="markup--strong markup--p-strong">name </strong>&quot;exemplo de nome&quot;</code></p><p name="7c12" id="7c12" class="graf graf--p graf-after--p">Interface em modo Access:<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1(config)# <strong class="markup--strong markup--p-strong">interface </strong>Gi0/1<br>SW1(config-if)# <strong class="markup--strong markup--p-strong">switchport mode access</strong><br>SW1(config-if)# <strong class="markup--strong markup--p-strong">switchport access vlan</strong> XX</code></p><p name="4dc9" id="4dc9" class="graf graf--p graf-after--p">Interface em modo Trunk:<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1(config)# <strong class="markup--strong markup--p-strong">interface </strong>Te0/1<br>SW1(config-if)# <strong class="markup--strong markup--p-strong">switchport mode trunk</strong><br>SW1(config-if)# <strong class="markup--strong markup--p-strong">switchport trunk allowed vlan</strong> XX,YY,ZZ<br>SW1(config-if)# <strong class="markup--strong markup--p-strong">switchport trunk native vlan</strong> XX</code></p><p name="b7a1" id="b7a1" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Troubleshooting:</strong></p><p name="3869" id="3869" class="graf graf--p graf-after--p">Verificar interfaces com VLANs configuradas em modo access e seus status:<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1# <strong class="markup--strong markup--p-strong">show vlan brief</strong></code></p><p name="5188" id="5188" class="graf graf--p graf-after--p">Verificar interfaces com VLANs configuradas em modo trunk e seus status:<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1# <strong class="markup--strong markup--p-strong">show interfaces trunk</strong></code></p><p name="fe47" id="fe47" class="graf graf--p graf-after--p graf--trailing">Verificar VLANs em detalhes:<code class="markup--code markup--p-code u-paddingRight0 u-marginRight0"><br>SW1# <strong class="markup--strong markup--p-strong">show interfaces switchport</strong></code></p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@fernandorgs" class="p-author h-card">Fernando Machado</a> on <a href="https://medium.com/p/a84414a79dc5"><time class="dt-published" datetime="2019-10-11T17:08:05.027Z">October 11, 2019</time></a>.</p><p><a href="https://medium.com/@fernandorgs/vlans-a84414a79dc5" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on October 11, 2019.</p></footer></article></body></html>
